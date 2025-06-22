@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -8,62 +8,111 @@ import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Upload, Search, Download, Eye, Calendar, User, Activity } from "lucide-react"
 
-const medicalRecords = [
-  {
-    id: 1,
-    title: "Complete Blood Count",
-    date: "2024-06-15",
-    doctor: "Dr. Sarah Johnson",
-    department: "Hematology",
-    type: "Lab Report",
-    status: "Normal",
-    tags: ["Hemoglobin: 13.2 g/dL", "WBC: 7,200", "Platelets: 250,000"],
-    summary: "All blood parameters within normal range. Slight improvement in hemoglobin levels.",
-  },
-  {
-    id: 2,
-    title: "Chest X-Ray",
-    date: "2024-06-10",
-    doctor: "Dr. Michael Chen",
-    department: "Radiology",
-    type: "Imaging",
-    status: "Normal",
-    tags: ["Clear lungs", "Normal heart size"],
-    summary: "No abnormalities detected. Lungs are clear with no signs of infection.",
-  },
-  {
-    id: 3,
-    title: "Lipid Profile",
-    date: "2024-06-05",
-    doctor: "Dr. Emily Davis",
-    department: "Cardiology",
-    type: "Lab Report",
-    status: "Attention",
-    tags: ["Cholesterol: 220 mg/dL", "LDL: 140 mg/dL", "HDL: 45 mg/dL"],
-    summary: "Cholesterol levels slightly elevated. Recommend dietary modifications.",
-  },
-  {
-    id: 4,
-    title: "Annual Physical Exam",
-    date: "2024-05-20",
-    doctor: "Dr. Robert Wilson",
-    department: "General Medicine",
-    type: "Physical Exam",
-    status: "Normal",
-    tags: ["BP: 120/80", "Weight: 70kg", "BMI: 22.5"],
-    summary: "Overall health is good. Continue current lifestyle and medications.",
-  },
-]
-
 export default function MedicalRecords() {
+  const [userId, setUserId] = useState<string | null>(null)
+  const [file, setFile] = useState<File | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [uploadSuccess, setUploadSuccess] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedDepartment, setSelectedDepartment] = useState("all")
+
+
+
+useEffect(() => {
+  const storedId = localStorage.getItem("userId")
+  console.log("Fetched userId from localStorage:", storedId)
+  setUserId(storedId)
+}, [])
+
+
+  const handleFileUpload = async () => {
+    console.log("file:", file)
+console.log("userId:", userId)
+    if (!file || !userId) {
+      alert("Missing file or user ID")
+      return
+    }
+
+    setUploading(true)
+    setUploadSuccess(false)
+
+    const formData = new FormData()
+    formData.append("reportFile", file)
+
+    try {
+      const response = await fetch(`http://localhost:4000/api/diet/generate-from-report/${userId}`, {
+        method: "POST",
+        body: formData,
+      })
+
+      const data = await response.json()
+      if (response.ok) {
+        console.log("Diet Plan:", data)
+        setUploadSuccess(true)
+      } else {
+        alert("Failed to upload report")
+      }
+    } catch (error) {
+      console.error("Upload error:", error)
+      alert("Error occurred while uploading")
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  const medicalRecords = [
+    {
+      id: 1,
+      title: "Complete Blood Count",
+      date: "2024-06-15",
+      doctor: "Dr. Sarah Johnson",
+      department: "Hematology",
+      type: "Lab Report",
+      status: "Normal",
+      tags: ["Hemoglobin: 13.2 g/dL", "WBC: 7,200", "Platelets: 250,000"],
+      summary: "All blood parameters within normal range. Slight improvement in hemoglobin levels.",
+    },
+    {
+      id: 2,
+      title: "Chest X-Ray",
+      date: "2024-06-10",
+      doctor: "Dr. Michael Chen",
+      department: "Radiology",
+      type: "Imaging",
+      status: "Normal",
+      tags: ["Clear lungs", "Normal heart size"],
+      summary: "No abnormalities detected. Lungs are clear with no signs of infection.",
+    },
+    {
+      id: 3,
+      title: "Lipid Profile",
+      date: "2024-06-05",
+      doctor: "Dr. Emily Davis",
+      department: "Cardiology",
+      type: "Lab Report",
+      status: "Attention",
+      tags: ["Cholesterol: 220 mg/dL", "LDL: 140 mg/dL", "HDL: 45 mg/dL"],
+      summary: "Cholesterol levels slightly elevated. Recommend dietary modifications.",
+    },
+    {
+      id: 4,
+      title: "Annual Physical Exam",
+      date: "2024-05-20",
+      doctor: "Dr. Robert Wilson",
+      department: "General Medicine",
+      type: "Physical Exam",
+      status: "Normal",
+      tags: ["BP: 120/80", "Weight: 70kg", "BMI: 22.5"],
+      summary: "Overall health is good. Continue current lifestyle and medications.",
+    },
+  ]
 
   const filteredRecords = medicalRecords.filter((record) => {
     const matchesSearch =
       record.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       record.doctor.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesDepartment = selectedDepartment === "all" || record.department.toLowerCase() === selectedDepartment
+    const matchesDepartment =
+      selectedDepartment === "all" || record.department.toLowerCase() === selectedDepartment
     return matchesSearch && matchesDepartment
   })
 
@@ -75,9 +124,13 @@ export default function MedicalRecords() {
           <h1 className="text-3xl font-bold text-gray-900">Medical Records</h1>
           <p className="text-gray-600">Manage and view your medical documents</p>
         </div>
-        <Button className="bg-sky-500 hover:bg-sky-600 text-white">
+        <Button
+          className="bg-sky-500 hover:bg-sky-600 text-white"
+          onClick={handleFileUpload}
+          disabled={uploading}
+        >
           <Upload className="h-4 w-4 mr-2" />
-          Upload New Record
+          {uploading ? "Uploading..." : "Upload New Record"}
         </Button>
       </div>
 
@@ -90,9 +143,15 @@ export default function MedicalRecords() {
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">Upload Medical Reports</h3>
             <p className="text-gray-600 mb-4">Drag and drop your PDF files here, or click to browse</p>
-            <Button variant="outline" className="border-sky-500 text-sky-600 hover:bg-sky-50">
-              Choose Files
-            </Button>
+            <Input
+              type="file"
+              accept=".pdf"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
+              className="mb-4"
+            />
+            {uploadSuccess && (
+              <p className="text-green-600 text-sm">Report uploaded successfully!</p>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -176,7 +235,7 @@ export default function MedicalRecords() {
         ))}
       </div>
 
-      {/* AI Analysis Summary */}
+      {/* AI Summary Card */}
       <Card className="bg-gradient-to-r from-purple-50 to-pink-50 border-0 shadow-sm">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">

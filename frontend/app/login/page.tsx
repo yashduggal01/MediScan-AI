@@ -33,8 +33,13 @@ export default function LoginPage() {
 
     const data = await res.json();
     if (res.ok) {
+      console.log(data);
+     console.log("Login Response:", data);
+      localStorage.setItem("userId", data.user._id); // ✅ Fix here
       alert("Patient login successful!");
       router.push("/patient/dashboard");
+     
+
     } else {
       alert(data.message || "Login failed");
     }

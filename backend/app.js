@@ -5,6 +5,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
 const authRoutes = require("./routes/authRoutes");
+const dietRoutes = require("./routes/dietRoutes");
 
 // Environment variables setup
 dotenv.config();
@@ -22,6 +23,8 @@ app.use(morgan('dev'));
 // Routes
 //Idar apne routes dalna
 app.use("/api/auth", authRoutes);
+app.use("/api/diet", dietRoutes);
+
 
 
 // Root route
