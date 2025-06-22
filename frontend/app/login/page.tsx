@@ -18,22 +18,61 @@ export default function LoginPage() {
   const router = useRouter()
 
   const handlePatientLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate login
-    setTimeout(() => {
-      router.push("/patient/dashboard")
-    }, 1000)
+  e.preventDefault();
+  setIsLoading(true);
+
+  const email = (document.getElementById("patient-email") as HTMLInputElement).value;
+  const password = (document.getElementById("patient-password") as HTMLInputElement).value;
+
+  try {
+    const res = await fetch("http://localhost:4000/api/auth/login/patient", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert("Patient login successful!");
+      router.push("/patient/dashboard");
+    } else {
+      alert(data.message || "Login failed");
+    }
+  } catch (err) {
+    alert("Something went wrong!");
+  } finally {
+    setIsLoading(false);
   }
+};
 
   const handleDoctorLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate login
-    setTimeout(() => {
-      router.push("/doctor/dashboard")
-    }, 1000)
+  e.preventDefault();
+  setIsLoading(true);
+
+  const email = (document.getElementById("doctor-email") as HTMLInputElement).value;
+  const password = (document.getElementById("doctor-password") as HTMLInputElement).value;
+
+  try {
+    const res = await fetch("http://localhost:4000/api/auth/login/doctor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert("Doctor login successful!");
+      router.push("/doctor/dashboard");
+    } else {
+      alert(data.message || "Login failed");
+    }
+  } catch (err) {
+    alert("Something went wrong!");
+  } finally {
+    setIsLoading(false);
   }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 to-emerald-50 flex items-center justify-center p-4">
