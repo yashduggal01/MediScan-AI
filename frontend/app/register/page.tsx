@@ -19,22 +19,88 @@ export default function RegisterPage() {
   const router = useRouter()
 
   const handlePatientRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate registration
-    setTimeout(() => {
-      router.push("/patient/dashboard")
-    }, 1500)
+  e.preventDefault();
+  setIsLoading(true);
+
+  const firstName = (document.getElementById("first-name") as HTMLInputElement).value;
+  const lastName = (document.getElementById("last-name") as HTMLInputElement).value;
+  const email = (document.getElementById("patient-email") as HTMLInputElement).value;
+  const phone = (document.getElementById("phone") as HTMLInputElement).value;
+  const dob = (document.getElementById("dob") as HTMLInputElement).value;
+  const password = (document.getElementById("patient-password") as HTMLInputElement).value;
+
+  try {
+    const res = await fetch("http://localhost:4000/api/auth/register/patient", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        phone,
+        dob,
+        password,
+      }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert("Patient registered successfully!");
+      router.push("/patient/dashboard");
+    } else {
+      alert(data.message || "Registration failed");
+    }
+  } catch (err) {
+    alert("Something went wrong!");
+  } finally {
+    setIsLoading(false);
   }
+};
+
 
   const handleDoctorRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-    // Simulate registration
-    setTimeout(() => {
-      router.push("/doctor/dashboard")
-    }, 1500)
+  e.preventDefault();
+  setIsLoading(true);
+
+  const firstName = (document.getElementById("doctor-first-name") as HTMLInputElement).value;
+  const lastName = (document.getElementById("doctor-last-name") as HTMLInputElement).value;
+  const email = (document.getElementById("doctor-email") as HTMLInputElement).value;
+  const licenseNumber = (document.getElementById("license") as HTMLInputElement).value;
+  const hospital = (document.getElementById("hospital") as HTMLInputElement).value;
+  const password = (document.getElementById("doctor-password") as HTMLInputElement).value;
+
+  // specialty is from <Select> component
+  const specialty = (document.querySelector('[data-state="checked"]') as HTMLElement)?.innerText;
+
+  try {
+    const res = await fetch("http://localhost:4000/api/auth/register/doctor", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        licenseNumber,
+        specialty,
+        hospital,
+        password,
+      }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert("Doctor registered successfully!");
+      router.push("/doctor/dashboard");
+    } else {
+      alert(data.message || "Registration failed");
+    }
+  } catch (err) {
+    alert("Something went wrong!");
+  } finally {
+    setIsLoading(false);
   }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 to-emerald-50 flex items-center justify-center p-4">

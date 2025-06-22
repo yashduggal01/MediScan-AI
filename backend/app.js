@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const morgan = require('morgan');
 const connectDB = require('./config/db');
+const authRoutes = require("./routes/authRoutes");
 
 // Environment variables setup
 dotenv.config();
@@ -20,6 +21,8 @@ app.use(morgan('dev'));
 
 // Routes
 //Idar apne routes dalna
+app.use("/api/auth", authRoutes);
+
 
 // Root route
 app.get('/', (req, res) => {
