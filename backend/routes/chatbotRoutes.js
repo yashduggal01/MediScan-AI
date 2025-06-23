@@ -3,7 +3,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const router = express.Router();
 
 // Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI("AIzaSyBVEeXYQcsMPtNiVi7_SyDNwUyK9Dm35uw");
 
 // Health-focused system prompt for better medical responses
 const SYSTEM_PROMPT = `You are HealthGPT, an AI health assistant for the MediScan AI platform. You provide helpful, accurate, and empathetic health information while always emphasizing the importance of consulting healthcare professionals for medical decisions.
