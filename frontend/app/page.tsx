@@ -76,7 +76,7 @@ export default function LandingPage() {
                 </h1>
                 <p className="text-xl text-gray-600 max-w-lg">
                   Expert medical care at your fingertips. AI-powered insights, secure data management, and personalized
-                  healthcare solutions.
+                  healthcare solutions with blockchain security.
                 </p>
               </div>
 
@@ -136,7 +136,7 @@ export default function LandingPage() {
               <div className="relative z-10">
                 <div className="absolute inset-0 bg-blue-600 rounded-full transform scale-75 opacity-20"></div>
                 <Image
-                  src="/images/doctor-hero-new.png"
+                  src="/images/1-removebg-preview.png"
                   alt="Professional female doctor with stethoscope in medical setting"
                   width={600}
                   height={600}
@@ -154,7 +154,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Left - Image */}
-            <div className="relative">
+            {/* <div className="relative">
               <div className="absolute top-4 left-4 space-y-2">
                 <div className="w-3 h-3 bg-blue-600 rounded-full"></div>
                 <div className="w-2 h-2 bg-blue-400 rounded-full ml-2"></div>
@@ -168,15 +168,23 @@ export default function LandingPage() {
                   <Shield className="h-6 w-6" />
                 </div>
               </div>
-            </div>
-
+            </div> */}
+<div className="w-64 h-64 bg-gray-200 rounded-2xl mx-auto flex items-center justify-center">
+  <Image
+    src="/images/2-removebg-preview.png" // public folder ke andar image ka naam
+    alt="About Doctor"
+    width={200}
+    height={200}
+    className="object-contain h-48 w-48"
+  />
+</div>
             {/* Right - Content */}
             <div className="space-y-6">
               <div className="text-blue-600 font-medium">ABOUT US</div>
               <h2 className="text-4xl font-bold text-gray-900">
-                15 Years of Expertise
+                AI Powered with 
                 <br />
-                in Medical Care
+                Blockchain
               </h2>
               <p className="text-gray-600 text-lg">
                 Expert medical care at your fingertips. AI-powered insights, secure data management, and personalized
