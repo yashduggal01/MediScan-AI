@@ -51,7 +51,8 @@ const morgan = require("morgan");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const dietRoutes = require("./routes/dietRoutes");
-const emergencyInfoRoutes  = require("./routes/emergency-info")
+const emergencyInfoRoutes  = require("./routes/emergency-info");
+const chatbotRoutes = require("./routes/chatbotRoutes");
 
 dotenv.config();
 connectDB();
@@ -66,7 +67,8 @@ app.use(morgan("dev"));
 // ✅ Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/diet", dietRoutes);
-app.use("/api/emergency", emergencyInfoRoutes)
+app.use("/api/emergency", emergencyInfoRoutes);
+app.use("/api/chatbot", chatbotRoutes);
 
 
 
