@@ -23,17 +23,17 @@ const initialMessages: Message[] = [
     id: 1,
     type: "assistant",
     content:
-      "Hello! I'm your HealthGPT assistant. I can help you understand your medical records, track your health trends, and answer questions about your health data. What would you like to know?",
+      "Hello! I'm HealthGPT, your AI-powered health assistant. I'm here to help you with health information, wellness tips, and general medical questions. I can assist with:\n\n• Understanding health conditions and symptoms\n• Medication information and interactions\n• Healthy lifestyle recommendations\n• Preventive care guidance\n• Emergency care information\n\n⚠️ Please remember: I'm an AI assistant and not a substitute for professional medical advice. For serious health concerns, always consult with qualified healthcare professionals.\n\nHow can I help you today?",
     timestamp: "10:00 AM",
   },
 ]
 
 const quickQuestions = [
-  "When is my next thyroid test?",
-  "Show my latest blood reports",
-  "What's my medication schedule?",
-  "Suggest a diet for anemia",
-  "Track my blood pressure trends",
+  "What are the symptoms of high blood pressure?",
+  "How can I improve my immune system?",
+  "What should I do for a severe headache?",
+  "Tips for managing diabetes naturally",
+  "When should I see a doctor for chest pain?",
 ]
 
 export default function HealthGPTChat() {
@@ -55,18 +55,48 @@ export default function HealthGPTChat() {
     setInputValue("")
     setIsTyping(true)
 
-    // Simulate AI response
-    setTimeout(() => {
-      const aiResponse: Message = {
+    try {
+      // Call the real backend API
+      const response = await fetch('http://localhost:4000/api/chatbot/ask', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+        const aiResponse: Message = {
+          id: messages.length + 2,
+          type: "assistant",
+          content: data.data.message,
+          timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          references: getReferences(message),
+        }
+        setMessages((prev) => [...prev, aiResponse])
+      } else {
+        throw new Error(data.error || 'Failed to get response');
+      }
+    } catch (error) {
+      console.error('Error calling chatbot API:', error);
+      
+      // Fallback to mock response if API fails
+      const errorResponse: Message = {
         id: messages.length + 2,
         type: "assistant",
-        content: getAIResponse(message),
+        content: "I apologize, but I'm having trouble connecting to my services right now. Please try again in a moment. If the issue persists, you can contact our support team.\n\nIn the meantime, for medical emergencies, please call 911 or visit your nearest emergency room.",
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-        references: getReferences(message),
       }
-      setMessages((prev) => [...prev, aiResponse])
+      setMessages((prev) => [...prev, errorResponse])
+    } finally {
       setIsTyping(false)
-    }, 2000)
+    }
   }
 
   const getAIResponse = (question: string): string => {
