@@ -62,7 +62,7 @@ const app = express();
 // ✅ Middleware
 app.use(express.json());
 app.use(cors({
-  origin: ["http://localhost:3000", "https://mediscan-ai.vercel.app"], 
+  origin: ["http://localhost:3000", "https://medi-scan-ai-virid.vercel.app/"], 
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
