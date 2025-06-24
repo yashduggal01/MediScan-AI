@@ -15,7 +15,7 @@ export default function MedicalRecords() {
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedDepartment, setSelectedDepartment] = useState("all")
-  const API_BASE = process.env.REACT_APP_API_URL;
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
 
 

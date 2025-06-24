@@ -359,7 +359,7 @@ export default function EmergencyQRPage() {
   // ✅ Replace with actual logged-in user ID
   const userId = "6669f5d1d6fb9a0f51234567";
   const [qrValue, setQRValue] = useState<string | null>(null);
-  const API_BASE = process.env.REACT_APP_API_URL;
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
   const generateQRLink = () => {
     return `${API_BASE}/emergency/view/${userId}`;

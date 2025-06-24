@@ -16,7 +16,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const API_BASE = process.env.REACT_APP_API_URL;
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
   const handlePatientLogin = async (e: React.FormEvent) => {
   e.preventDefault();

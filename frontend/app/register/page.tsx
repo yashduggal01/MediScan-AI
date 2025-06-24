@@ -28,7 +28,7 @@ export default function RegisterPage() {
   const phone = (document.getElementById("phone") as HTMLInputElement).value;
   const dob = (document.getElementById("dob") as HTMLInputElement).value;
   const password = (document.getElementById("patient-password") as HTMLInputElement).value;
-  const API_BASE =process.env.REACT_APP_API_URL;;
+  const API_BASE =process.env.NEXT_PUBLIC_API_URL;
   try {
     const res = await fetch(`${API_BASE}/api/auth/register/patient`, {
       method: "POST",
@@ -71,7 +71,7 @@ export default function RegisterPage() {
 
   // specialty is from <Select> component
   const specialty = (document.querySelector('[data-state="checked"]') as HTMLElement)?.innerText;
-  const API_BASE = process.env.REACT_APP_API_URL;
+  const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
   try {
     const res = await fetch(`${API_BASE}/api/auth/register/doctor`, {

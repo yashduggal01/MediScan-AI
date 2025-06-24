@@ -40,6 +40,7 @@ export default function HealthGPTChat() {
   const [messages, setMessages] = useState<Message[]>(initialMessages)
   const [inputValue, setInputValue] = useState("")
   const [isTyping, setIsTyping] = useState(false)
+   const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
   const handleSendMessage = async (message: string) => {
     if (!message.trim()) return
@@ -57,7 +58,7 @@ export default function HealthGPTChat() {
 
     try {
       // Call the real backend API
-      const response = await fetch('http://localhost:4000/api/chatbot/ask', {
+      const response = await fetch(`${API_BASE}/api/chatbot/ask`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
