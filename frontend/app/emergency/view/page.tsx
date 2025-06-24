@@ -7,11 +7,12 @@ export default function EmergencyInfoViewer() {
   const { userId } = useParams();
   const [info, setInfo] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const API_BASE = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     async function fetchInfo() {
       try {
-        const res = await fetch(`http://localhost:4000/api/emergency/${userId}`);
+        const res = await fetch(`${API_BASE}/api/emergency/${userId}`);
         const result = await res.json();
         setInfo(result.data || null);
       } catch (err) {

@@ -16,6 +16,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+  const API_BASE = process.env.REACT_APP_API_URL;
 
   const handlePatientLogin = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -25,7 +26,7 @@ export default function LoginPage() {
   const password = (document.getElementById("patient-password") as HTMLInputElement).value;
 
   try {
-    const res = await fetch("http://localhost:4000/api/auth/login/patient", {
+    const res = await fetch(`${API_BASE}/api/auth/login/patient`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -58,7 +59,7 @@ export default function LoginPage() {
   const password = (document.getElementById("doctor-password") as HTMLInputElement).value;
 
   try {
-    const res = await fetch("http://localhost:4000/api/auth/login/doctor", {
+    const res = await fetch(`${API_BASE}/api/auth/login/doctor`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

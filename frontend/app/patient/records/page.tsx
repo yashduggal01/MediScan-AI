@@ -15,6 +15,7 @@ export default function MedicalRecords() {
   const [uploadSuccess, setUploadSuccess] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedDepartment, setSelectedDepartment] = useState("all")
+  const API_BASE = process.env.REACT_APP_API_URL;
 
 
 
@@ -40,7 +41,7 @@ console.log("userId:", userId)
     formData.append("reportFile", file)
 
     try {
-      const response = await fetch(`http://localhost:4000/api/diet/generate-from-report/${userId}`, {
+      const response = await fetch(`${API_BASE}/api/diet/generate-from-report/${userId}`, {
         method: "POST",
         body: formData,
       })
